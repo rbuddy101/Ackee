@@ -22,6 +22,7 @@ import RouteBrowsers from './routes/RouteBrowsers'
 import RouteSizes from './routes/RouteSizes'
 import RouteLanguages from './routes/RouteLanguages'
 import RouteSettings from './routes/RouteSettings'
+import RouteAds from './routes/RouteAds'
 
 const routeComponents = {
 	[routes.OVERVIEW]: RouteOverview,
@@ -37,6 +38,7 @@ const routeComponents = {
 	[routes.SIZES]: RouteSizes,
 	[routes.LANGUAGES]: RouteLanguages,
 	[routes.SETTINGS]: RouteSettings,
+	[routes.ADS]: RouteAds,
 }
 
 const gotoDomainWhenDefined = (domains, setRoute, index) => {
@@ -55,6 +57,7 @@ const Dashboard = (props) => {
 	useHotkeys('d', () => props.setRoute('/insights/durations'))
 	useHotkeys('e', () => props.setRoute('/insights/events'))
 	useHotkeys('s', () => props.setRoute('/settings'))
+	useHotkeys('a', () => props.setRoute('/ads'))
 	useHotkeys('0,1,2,3,4,5,6,7,8,9', (e, { key }) => gotoDomainWhenDefined(domains.value, props.setRoute, key), [ domains.value ])
 
 	const hasDomains = domains.value.length > 0
@@ -86,6 +89,7 @@ const Dashboard = (props) => {
 		hasDomains === true ? createDropdown(domainsLabel, domainsItems) : undefined,
 		createDropdown(insightsLabel, insightsItems),
 		createButton('Settings', '/settings', props.route, props.setRoute),
+		createButton('Ads', '/ads', props.route, props.setRoute),
 	].filter(Boolean)
 
 	return (

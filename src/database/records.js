@@ -2,6 +2,7 @@
 
 const Record = require('../models/Record')
 
+
 const response = (entry) => ({
 	id: entry.id,
 	siteLocation: entry.siteLocation,
@@ -27,6 +28,8 @@ const add = async (data) => {
 	const enhance = (entry) => {
 		return entry == null ? entry : response(entry)
 	}
+
+	// this is where we will also create a session for the first time
 
 	return enhance(
 		await Record.create({

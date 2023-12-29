@@ -11,6 +11,7 @@ import RouteSystems from '../components/routes/RouteSystems'
 import RouteSizes from '../components/routes/RouteSizes'
 import RouteEvents from '../components/routes/RouteEvents'
 import RouteSettings from '../components/routes/RouteSettings'
+import RouteAds from '../components/routes/RouteAds'
 
 export const ROUTE_OVERVIEW = { key: 'route_overview', title: 'Overview', component: RouteOverview }
 export const ROUTE_DOMAIN = { key: 'route_domain', title: 'Domains', component: RouteDomain }
@@ -25,3 +26,4 @@ export const ROUTE_DEVICES = { key: 'route_devices', title: 'Devices', component
 export const ROUTE_BROWSERS = { key: 'route_browsers', title: 'Browsers', component: RouteBrowsers }
 export const ROUTE_EVENTS = { key: 'route_events', title: 'Events', component: RouteEvents }
 export const ROUTE_SETTINGS = { key: 'route_settings', title: 'Settings', component: RouteSettings }
+export const ROUTE_ADS = { key: 'route_ads', title: 'Ads', component: RouteAds }

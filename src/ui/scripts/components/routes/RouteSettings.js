@@ -73,7 +73,7 @@ const RouteSettings = (props) => {
 		h(Fragment, {},
 
 			h(CardSetting, {
-				headline: 'Account',
+				headline: 'Account Information',
 			},
 				h(LinkItem, { type: 'p', disabled: true, text: version }, 'Version'),
 				h(Line),

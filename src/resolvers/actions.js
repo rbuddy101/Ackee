@@ -4,6 +4,8 @@ const KnownError = require('../utils/KnownError')
 const messages = require('../utils/messages')
 const events = require('../database/events')
 const actions = require('../database/actions')
+const identifier = require('../utils/identifier')
+const sessions = require('../database/sessions')
 
 const polish = (obj) => {
 	return Object.entries(obj).reduce((acc, [ key, value ]) => {
@@ -18,7 +20,7 @@ const polish = (obj) => {
 
 module.exports = {
 	Mutation: {
-		createAction: async (parent, { eventId, input }, { isIgnored }) => {
+		createAction: async (parent, { eventId, input }, { ip, userAgent, isIgnored }) => {
 			// Ignore your own actions when logged in
 			if (isIgnored === true) {
 				return {
@@ -28,9 +30,17 @@ module.exports = {
 					},
 				}
 			}
+			const clientId = identifier(ip, userAgent)
+			const data = polish({ ...input, clientId, eventId })
+			try {
+				await sessions.addAction(data)
+			} catch (error) {
+				if (error.name === 'ValidationError') {
+					throw new KnownError(messages(error.errors))
+				}
 
-			const data = polish({ ...input, eventId })
-
+				throw error
+			}
 			const event = await events.get(eventId)
 
 			if (event == null) throw new KnownError('Unknown event')

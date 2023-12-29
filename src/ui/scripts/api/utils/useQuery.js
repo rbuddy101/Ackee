@@ -27,3 +27,19 @@ export default (query, selector, enhancer, options) => {
 		status: _status,
 	}
 }
+
+// export useQueryAds
+export const useQueryAds = (query) => {
+    const { loading, error, data } = useQuery(query, {
+        fetchPolicy: 'network-only',
+        // nextFetchPolicy: 'cache-first'
+    });
+
+    const result = useMemo(() => {
+        if (loading) return { loading: true };
+        if (error) return { error };
+        return { data };
+    }, [loading, error, data]);
+
+    return result;
+}

@@ -15,6 +15,10 @@ const schema = new mongoose.Schema({
 		required: true,
 		index: true,
 	},
+	clientId: {
+		type: String,
+		index: true,
+	},
 	key: {
 		type: String,
 	},

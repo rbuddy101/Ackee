@@ -33,6 +33,63 @@ module.exports = gql`
 		updated: DateTime!
 	}
 
+    type Action {
+        """
+        The value associated with the action.
+        """
+        value: PositiveFloat!
+        """
+        A unique key identifying the action.
+        """
+        key: String!
+        """
+        The date and time when the action was created.
+        """
+        created: DateTime!
+        """
+        The date and time when the action was last updated.
+        """
+        updated: DateTime!
+    }
+
+	type Session {
+		"""
+		Client identifier.
+		"""
+		clientId: String!
+		"""
+		Location of the site.
+		"""
+		siteLocation: String
+		"""
+		Referrer of the site.
+		"""
+		siteReferrer: String
+		"""
+		Source of the site.
+		"""
+		source: String
+		"""
+		Identifies the date and time when the object was created.
+		"""
+		created: DateTime!
+		"""
+		Identifies the date and time when the object was updated.
+		"""
+		updated: DateTime!
+		"""
+		Actions of the session.
+		"""
+		actions: [Action!]
+	}
+
+	type Query {
+		"""
+		Data of all existing sessions.
+		"""
+		sessions: [Session!]
+	}
+
 	input CreateDomainInput {
 		"""
 		Title of the domain.

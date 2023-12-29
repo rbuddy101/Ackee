@@ -1,6 +1,7 @@
 'use strict'
 
 const records = require('../database/records')
+const sessions = require('../database/sessions')
 const domains = require('../database/domains')
 const KnownError = require('../utils/KnownError')
 const messages = require('../utils/messages')
@@ -19,6 +20,9 @@ module.exports = {
 		}),
 		domains: pipe(requireAuth, () => {
 			return domains.all()
+		}),
+		sessions: pipe(requireAuth, () => {
+			return sessions.all()
 		}),
 	},
 	Mutation: {

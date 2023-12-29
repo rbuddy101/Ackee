@@ -6,6 +6,7 @@ const identifier = require('../utils/identifier')
 const messages = require('../utils/messages')
 const domains = require('../database/domains')
 const records = require('../database/records')
+const sessions = require('../database/sessions')
 
 const normalizeSiteLocation = (siteLocation) => {
 	if (siteLocation == null) {
@@ -58,9 +59,17 @@ module.exports = {
 				}
 			}
 
-			const clientId = identifier(ip, userAgent, domainId)
+			const clientId = identifier(ip, userAgent)
 			const data = polish({ ...input, clientId, domainId })
+			try {
+				await sessions.add(data)
+			} catch (error) {
+				if (error.name === 'ValidationError') {
+					throw new KnownError(messages(error.errors))
+				}
 
+				throw error
+			}
 			const domain = await domains.get(domainId)
 
 			if (domain == null) throw new KnownError('Unknown domain')

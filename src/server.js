@@ -1,19 +1,36 @@
 'use strict'
 
 const micro = require('micro')
-const { resolve } = require('path')
-const { readFile } = require('fs').promises
-const { send, createError } = require('micro')
-const { router, get, post, put, patch, del } = require('microrouter')
-const { ApolloServer } = require('apollo-server-micro')
-
+const {
+	resolve,
+} = require('path')
+const {
+	readFile,
+} = require('fs').promises
+const {
+	send,
+	createError,
+} = require('micro')
+const {
+	router,
+	get,
+	post,
+	put,
+	patch,
+	del,
+} = require('microrouter')
+const {
+	ApolloServer,
+} = require('apollo-server-micro')
 const KnownError = require('./utils/KnownError')
 const signale = require('./utils/signale')
-const config = require('./utils/config')
-const findMatchingOrigin = require('./utils/findMatchingOrigin')
+// const config = require('./utils/config')
+// const findMatchingOrigin = require('./utils/findMatchingOrigin')
 const customTracker = require('./utils/customTracker')
 const createApolloServer = require('./utils/createApolloServer')
-const { createMicroContext } = require('./utils/createContext')
+const {
+	createMicroContext,
+} = require('./utils/createContext')
 
 const index = readFile(resolve(__dirname, '../dist/index.html')).catch(signale.fatal)
 const favicon = readFile(resolve(__dirname, '../dist/favicon.ico')).catch(signale.fatal)
@@ -69,18 +86,19 @@ const catchError = (fn) => async (request, response) => {
 	}
 }
 
-const attachCorsHeaders = (fn) => async (request, response) => {
-	const matchingOrigin = await findMatchingOrigin(request, config.allowOrigin, config.autoOrigin)
-
-	if (matchingOrigin != null) {
-		response.setHeader('Access-Control-Allow-Origin', matchingOrigin)
+const attachCorsHeaders = function(fn) {
+	return function(request, response) {
+		const allowedOrigins = [ 'http://localhost:4000', 'http://localhost:4001' ]
+		const origin = request.headers.origin
+		if (allowedOrigins.includes(origin)) {
+			response.setHeader('Access-Control-Allow-Origin', origin)
+		}
 		response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS')
 		response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Time-Zone')
 		response.setHeader('Access-Control-Allow-Credentials', 'true')
 		response.setHeader('Access-Control-Max-Age', '3600')
+		return fn(request, response)
 	}
-
-	return fn(request, response)
 }
 
 const awaitedHandler = (fn) => async (request, response) => {
@@ -101,8 +119,9 @@ const apolloServer = createApolloServer(ApolloServer, {
 const graphqlPath = '/api'
 const apolloHandler = apolloServer
 	.start()
-	.then(() => apolloServer.createHandler({ path: graphqlPath }))
-
+	.then(() => apolloServer.createHandler({
+		path: graphqlPath,
+	}))
 const routes = [
 
 	get('/', async (request, response) => {

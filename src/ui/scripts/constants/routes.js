@@ -13,6 +13,7 @@ export const BROWSERS = Symbol()
 export const SIZES = Symbol()
 export const LANGUAGES = Symbol()
 export const SETTINGS = Symbol()
+export const ADS = Symbol()
 
 const routes = [
 	{
@@ -66,6 +67,10 @@ const routes = [
 	{
 		pattern: new UrlPattern('/settings'),
 		key: SETTINGS,
+	},
+	{
+		pattern: new UrlPattern('/ads'),
+		key: ADS,
 	},
 ]
 
